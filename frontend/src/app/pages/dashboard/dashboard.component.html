@@ -1,0 +1,84 @@
+<app-header></app-header>
+
+<div class="dashboard-container">
+  <div *ngIf="isLoading" class="loading">
+    <p>Carregando dados...</p>
+  </div>
+
+  <div *ngIf="!isLoading" class="dashboard-content">
+    <!-- Summary Cards -->
+    <div class="summary-cards">
+      <div class="card card-primary">
+        <div class="card-icon">💰</div>
+        <div class="card-content">
+          <h3>Saldo Total</h3>
+          <p class="value">{{ summary?.balance?.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'}) }}</p>
+        </div>
+      </div>
+
+      <div class="card card-success">
+        <div class="card-icon">📈</div>
+        <div class="card-content">
+          <h3>Entradas</h3>
+          <p class="value">{{ summary?.total_incoming?.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'}) }}</p>
+        </div>
+      </div>
+
+      <div class="card card-danger">
+        <div class="card-icon">📉</div>
+        <div class="card-content">
+          <h3>Saídas</h3>
+          <p class="value">{{ summary?.total_outgoing?.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'}) }}</p>
+        </div>
+      </div>
+
+      <div class="card card-info">
+        <div class="card-icon">📊</div>
+        <div class="card-content">
+          <h3>Transações</h3>
+          <p class="value">{{ summary?.transactions_count }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <app-chart [transactions]="transactions"></app-chart>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-primary" (click)="openTransactionModal()">
+        ➕ Nova Transação
+      </button>
+      <button class="btn btn-secondary" (click)="openTransactionTypeModal()">
+        🏷️ Novo Tipo
+      </button>
+      <button class="btn btn-secondary" (click)="openPaymentMethodModal()">
+        💳 Nova Forma de Pagamento
+      </button>
+    </div>
+
+    <!-- Transaction List -->
+    <app-transaction-list 
+      [transactions]="transactions"
+      (onDelete)="onTransactionDeleted()"
+    ></app-transaction-list>
+  </div>
+</div>
+
+<!-- Modals -->
+<app-transaction-modal 
+  *ngIf="showTransactionModal"
+  [transactionTypes]="transactionTypes"
+  [paymentMethods]="paymentMethods"
+  (close)="closeTransactionModal()"
+></app-transaction-modal>
+
+<app-payment-method-modal 
+  *ngIf="showPaymentMethodModal"
+  (close)="closePaymentMethodModal()"
+></app-payment-method-modal>
+
+<app-transaction-type-modal 
+  *ngIf="showTransactionTypeModal"
+  (close)="closeTransactionTypeModal()"
+></app-transaction-type-modal>

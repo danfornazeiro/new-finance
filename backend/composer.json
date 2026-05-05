@@ -1,0 +1,17 @@
+{
+  "name": "financeiro/saas",
+  "description": "SAAS de Gestão Financeira com PHP 8 e MySQL",
+  "type": "project",
+  "require": {
+    "php": "^8.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "App\\": "app/"
+    }
+  },
+  "scripts": {
+    "start": "php -S localhost:8000 -t public",
+    "dev": "php -S localhost:8000 -t public"
+  }
+}
